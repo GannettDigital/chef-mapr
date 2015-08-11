@@ -24,6 +24,17 @@ include_recipe 'ntp'
 include_recipe 'mapr_installation::mapr_base'
 include_recipe 'mapr_installation::mapr_nodemanager'
 
+remote_directory "/opt/mapr/server/scripts" do
+  source "scripts"
+  user "root"
+  group "root"
+  mode "755"
+  files_owner "root"
+  files_group "root"
+  files_mode "755"
+end
+
+
 is_zk = 'no'
 is_cldb = 'no'
 
@@ -69,6 +80,8 @@ end
 # NOTE:  This will NOT automatically bring up the cluster.  That is done below...
 include_recipe 'mapr_installation::mapr_setenv'
 include_recipe 'mapr_installation::mapr_configure'
+include_recipe 'mapr_installation::mapr_disksetup'
+
 
 # Start Zookeeper service
 if is_zk == 'yes'
@@ -108,30 +121,13 @@ ruby_block 'Warden running?' do
 end
 
 cldb_running = 'no'
-ruby_block 'CLDB up and running?' do
-  block do
-    while cldb_running == 'no'
-      run_check = Mixlib::ShellOut.new('maprcli node cldbmaster')
-      rc = /ServerID/.match(run_check)
-      if rc.to_s == 'ServerID'
-        cldb_running = 'yes'
-      else
-        Mixlib::ShellOut.new('sleep 5')
-        print '\nSleeping for 5, waiting on CLDB...\n'
-      end
-    end
-  end
+execute "CLDB up and running?" do
+  command "/opt/mapr/server/scripts/waitfor.py \"ServerID\" maprcli node cldbmaster"
 end
 
 # Get running warden count
 warden_running = '0'
 
-ruby_block 'Getting running warden count' do
-  block do
-    while warden_running.to_s != node['mapr']['node_count']
-      wc = Mixlib::ShellOut.new('maprcli node list -columns hostname|grep -v "hostname                      ip"|wc -l')
-      warden_running = /#{node["mapr"]["node_count"]}/.match(wc)
-      Mixlib::Shell.out('sleep 20')
-    end
-  end
+execute "All nodes up?" do
+  command "/opt/mapr/server/scripts/wait-for-cluster.py #{node['mapr']['node_count']}"
 end
