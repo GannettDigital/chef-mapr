@@ -48,6 +48,10 @@ default['mapr']['config']['yarn-site.xml'] = { 'yarn.nodemanager.resource.cpu-vc
 ##
 default['mapr']['firewall_rules'] = [
   {
+    'name' => 'ssh',
+    'port' => 22
+  },
+  {
     'name' => 'cldb',
     'port' => 7222
   },

@@ -18,6 +18,20 @@
     },
     "ssh_keys": {
       "mapr": ["mapr"]
+    },
+    "jobs": {
+      "userStore": {
+        "entities": {
+          "userStore_L1": {
+            "sqoop_data_bag": "userStore",
+            "sqoop_options": [
+              "import",
+              "--password-file",
+              "/opt/mapr/jobs/userStore/conf/userStore.password"
+            ]
+          }
+        }
+      }
     }
   },
   "run_list": [
