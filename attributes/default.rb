@@ -3,6 +3,8 @@ default['mapr']['group'] = 'mapr'
 default['ntp']['servers'] = ["'0.pool.ntp.org', '1.pool.ntp.org'"]
 default['mapr']['clush']['url'] = 'https://github.com/downloads/cea-hpc/clustershell/clustershell-1.6-1.el6.noarch.rpm'
 
+default['mapr']['edge'] = nil
+
 # Define MapR roles for configure.sh here
 default['mapr']['fs'] = '*'
 default['mapr']['nfs'] = '*'
