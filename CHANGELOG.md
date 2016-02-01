@@ -3,6 +3,10 @@ mapr_installation CHANGELOG
 
 This file is used to list changes made in each version of the mapr_installation cookbook.
 
+0.3.22
+-----
+- [eric moritz] - DL-290 testing build
+
 0.3.21
 -----
 - [eric moritz] - DL-290 turned off startup for edge nodes

@@ -1,4 +1,4 @@
-mapr_installation Cookbook
+mapr_installation Cookbook.
 ==========================
 This cookbook automates the installation of a MapR cluster.  Currently, this cookbook supports has only been tested on CentOS, but should work fine on Redhat as well
 
